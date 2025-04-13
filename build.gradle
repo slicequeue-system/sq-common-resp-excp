@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'maven-publish'
+}
+
+group = 'app.slicequeue'
+version = "0.0.2"
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.4.3'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.4.3'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.4.3'
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// bootJar 비활성화, jar만 활성화
+tasks.named('bootJar') {
+    enabled = false
+}
+
+tasks.named('jar') {
+    enabled = true
+    archiveClassifier.set('')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId = 'app.slicequeue'
+            artifactId = 'sq-common-response-and-exception'
+            version = project.version.toString()
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'artifactory'
+            url = uri("https://af.slicequeue.app/artifactory/gradle-dev")
+
+            credentials {
+                username = findProperty("ARTIFACTORY_USER") as String
+                password = findProperty("ARTIFACTORY_PASSWORD") as String
+            }
+        }
+    }
+}
