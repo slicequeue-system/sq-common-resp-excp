@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'app.slicequeue'
-version = "0.0.2"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -44,7 +44,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             groupId = 'app.slicequeue'
-            artifactId = 'sq-common-response-and-exception'
+            artifactId = 'sq-common-resp-excp'
             version = project.version.toString()
         }
     }
